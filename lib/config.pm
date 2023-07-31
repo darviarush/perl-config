@@ -17,14 +17,13 @@ sub config_module {
 }
 
 # Проект всегда старует от корня своей директории, где и должен лежать модуль
-use DDP; p @INC;
-p my $x=`pwd`;
-require "./.config.pm";
+require "./.config.pm" if -e "./.config.pm";
 
 # Импортирует конфиг-константы
 sub import {
 	my ($cls, $name, $value) = @_;
-	my $hash = ref $name eq "HASH"? $name: {$name => $value};
+	return if !defined $name;
+	my $hash = ref $name eq "HASH"? $name: +{($name => $value)};
 	
 	my $pkg = caller;
 
@@ -32,6 +31,53 @@ sub import {
 }
 
 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -80,7 +126,7 @@ File .config.pm:
 
 	package config;
 	
-	config_module 'Query' => {
+	config_module 'My::Query' => {
 	    DB_HOST => "mydb.com",
 	};
 	
@@ -88,7 +134,8 @@ File .config.pm:
 
 What happened:
 
-	use My::Query;
+	unshift @INC, "lib";
+	require My::Query;
 	
 	$My::Query::connect # \> mysql://root:pass@mydb.com/mizericordia
 
@@ -104,10 +151,10 @@ The project must start from this folder in order for the B<./.config.pm> to be r
 
 =head1 import
 
+File lib/Example.pl:
+
 	# One constant
 	use config A => 10;
-	
-	A # => 10;
 	
 	# Multiconstants:
 	use config {
@@ -115,13 +162,20 @@ The project must start from this folder in order for the B<./.config.pm> to be r
 	    C => 4,
 	};
 	
-	B # => 3
-	C # => 4
+	1;
+
+
+
+	require 'Example.pl';
+	
+	A() # => 10
+	B() # => 3
+	C() # => 4
 	
 	# And in runtime:
-	config->import(D => 5);
+	config->import('D' => 5);
 	
-	D # => 5
+	D() # => 5
 
 =head1 config_module MODULE => {...}
 

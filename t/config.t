@@ -25,7 +25,7 @@ our $connect = "mysql://" . DB_USER . ":" . DB_PASSWORD . "\@" . DB_HOST . "/" .
 
 { my $s = main::_mkpath_('.config.pm'); open my $__f__, '>:utf8', $s or die "Read $s: $!"; print $__f__ 'package config;
 
-config_module \'Query\' => {
+config_module \'My::Query\' => {
     DB_HOST => "mydb.com",
 };
 
@@ -34,7 +34,8 @@ config_module \'Query\' => {
 # 
 # What happened:
 subtest 'SYNOPSIS' => sub { 
-use My::Query;
+unshift @INC, "lib";
+require My::Query;
 
 is scalar do {$My::Query::connect}, 'mysql://root:pass@mydb.com/mizericordia', '$My::Query::connect # \> mysql://root:pass@mydb.com/mizericordia';
 
@@ -51,11 +52,10 @@ is scalar do {$My::Query::connect}, 'mysql://root:pass@mydb.com/mizericordia', '
 # 
 # # import
 # 
-done_testing; }; subtest 'import' => sub { 
-# One constant
-use config A => 10;
+# File lib/Example.pl:
 
-is scalar do {A}, "10;", 'A # => 10;';
+{ my $s = main::_mkpath_('lib/Example.pl'); open my $__f__, '>:utf8', $s or die "Read $s: $!"; print $__f__ '# One constant
+use config A => 10;
 
 # Multiconstants:
 use config {
@@ -63,13 +63,20 @@ use config {
     C => 4,
 };
 
-is scalar do {B}, "3", 'B # => 3';
-is scalar do {C}, "4", 'C # => 4';
+1;
+'; close $__f__ }
+# 
+done_testing; }; subtest 'import' => sub { 
+require 'Example.pl';
+
+is scalar do {A()}, "10", 'A() # => 10';
+is scalar do {B()}, "3", 'B() # => 3';
+is scalar do {C()}, "4", 'C() # => 4';
 
 # And in runtime:
-config->import(D => 5);
+config->import('D' => 5);
 
-is scalar do {D}, "5", 'D # => 5';
+is scalar do {D()}, "5", 'D() # => 5';
 
 # 
 # # config_module MODULE => {...}

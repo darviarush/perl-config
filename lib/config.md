@@ -25,7 +25,7 @@ File .config.pm:
 ```perl
 package config;
 
-config_module 'Query' => {
+config_module 'My::Query' => {
     DB_HOST => "mydb.com",
 };
 
@@ -34,7 +34,8 @@ config_module 'Query' => {
 
 What happened:
 ```perl
-use My::Query;
+unshift @INC, "lib";
+require My::Query;
 
 $My::Query::connect # \> mysql://root:pass@mydb.com/mizericordia
 ```
@@ -51,11 +52,10 @@ The project must start from this folder in order for the **./.config.pm** to be 
 
 # import
 
+File lib/Example.pl:
 ```perl
 # One constant
 use config A => 10;
-
-A # => 10;
 
 # Multiconstants:
 use config {
@@ -63,13 +63,20 @@ use config {
     C => 4,
 };
 
-B # => 3
-C # => 4
+1;
+```
+
+```perl
+require 'Example.pl';
+
+A() # => 10
+B() # => 3
+C() # => 4
 
 # And in runtime:
-config->import(D => 5);
+config->import('D' => 5);
 
-D # => 5
+D() # => 5
 ```
 
 # config_module MODULE => {...}
