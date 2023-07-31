@@ -34,8 +34,8 @@ config_module 'My::Query' => {
 
 What happened:
 ```perl
-unshift @INC, "lib";
-require My::Query;
+use lib 'lib';
+use My::Query;
 
 $My::Query::connect # \> mysql://root:pass@mydb.com/mizericordia
 ```
@@ -52,10 +52,7 @@ The project must start from this folder in order for the **./.config.pm** to be 
 
 # import
 
-File lib/Example.pm:
 ```perl
-package Example;
-
 # One constant
 use config A => 10;
 
@@ -65,15 +62,9 @@ use config {
     C => 4,
 };
 
-1;
-```
-
-```perl
-require Example;
-
-Example::A() # => 10
-Example::B() # => 3
-Example::C() # => 4
+A # => 10
+B # => 3
+C # => 4
 
 # And in runtime:
 config->import('D' => 5);

@@ -1,41 +1,41 @@
-use strict; use warnings; use utf8; use open qw/:std :utf8/; use Test::More 0.98; use Carp::Always::Color; sub _mkpath_ { my ($p) = @_; length($`) && !-e $`? mkdir($`, 0755) || die "mkdir $`: $!": () while $p =~ m!/!g; $p } BEGIN { my $s = '/tmp/.liveman/perl-config/config/'; `rm -fr $s` if -e $s; chdir _mkpath_($s) or die "chdir $s: $!" } # # NAME
+use strict; use warnings; use utf8; use open qw/:std :utf8/; use Test::More 0.98; use Carp::Always::Color; sub _mkpath_ { my ($p) = @_; length($`) && !-e $`? mkdir($`, 0755) || die "mkdir $`: $!": () while $p =~ m!/!g; $p } BEGIN { my $t = `pwd`; chop $t; $t .= '/' . __FILE__; my $s = '/tmp/.liveman/perl-config/config/'; `rm -fr $s` if -e $s; chdir _mkpath_($s) or die "chdir $s: $!"; open my $__f__, "<:utf8", $t or die "Read $t: $!"; $s = join "", <$__f__>; close $__f__; while($s =~ /^#\@> (.*)\n((#>> .*\n)*)#\@< EOF\n/gm) { my ($file, $code) = ($1, $2); $code =~ s/^#>> //mg; open my $__f__, ">:utf8", _mkpath_($file) or die "Write $file: $!"; print $__f__ $code; close $__f__; } } # # NAME
 # 
 # **config** — Perl module constant configurator.
 # 
 # # SYNOPSIS
 # 
 # File lib/My/Query.pm:
-
-{ my $s = main::_mkpath_('lib/My/Query.pm'); open my $__f__, '>:utf8', $s or die "Read $s: $!"; print $__f__ 'package My::Query;
-
-use config DB_NAME => "mizericordia";
-use config DB_HOST => "192.168.0.1";
-
-use config {
-    DB_USER => "root",
-    DB_PASSWORD => "pass",
-};
-
-our $connect = "mysql://" . DB_USER . ":" . DB_PASSWORD . "\@" . DB_HOST . "/" . DB_NAME;
-
-1;
-'; close $__f__ }
+#@> lib/My/Query.pm
+#>> package My::Query;
+#>> 
+#>> use config DB_NAME => "mizericordia";
+#>> use config DB_HOST => "192.168.0.1";
+#>> 
+#>> use config {
+#>>     DB_USER => "root",
+#>>     DB_PASSWORD => "pass",
+#>> };
+#>> 
+#>> our $connect = "mysql://" . DB_USER . ":" . DB_PASSWORD . "\@" . DB_HOST . "/" . DB_NAME;
+#>> 
+#>> 1;
+#@< EOF
 # 
 # File .config.pm:
-
-{ my $s = main::_mkpath_('.config.pm'); open my $__f__, '>:utf8', $s or die "Read $s: $!"; print $__f__ 'package config;
-
-config_module \'My::Query\' => {
-    DB_HOST => "mydb.com",
-};
-
-1;
-'; close $__f__ }
+#@> .config.pm
+#>> package config;
+#>> 
+#>> config_module 'My::Query' => {
+#>>     DB_HOST => "mydb.com",
+#>> };
+#>> 
+#>> 1;
+#@< EOF
 # 
 # What happened:
 subtest 'SYNOPSIS' => sub { 
-unshift @INC, "lib";
-require My::Query;
+use lib 'lib';
+use My::Query;
 
 is scalar do {$My::Query::connect}, 'mysql://root:pass@mydb.com/mizericordia', '$My::Query::connect # \> mysql://root:pass@mydb.com/mizericordia';
 
@@ -52,10 +52,7 @@ is scalar do {$My::Query::connect}, 'mysql://root:pass@mydb.com/mizericordia', '
 # 
 # # import
 # 
-# File lib/Example.pm:
-
-{ my $s = main::_mkpath_('lib/Example.pm'); open my $__f__, '>:utf8', $s or die "Read $s: $!"; print $__f__ 'package Example;
-
+done_testing; }; subtest 'import' => sub { 
 # One constant
 use config A => 10;
 
@@ -65,15 +62,9 @@ use config {
     C => 4,
 };
 
-1;
-'; close $__f__ }
-# 
-done_testing; }; subtest 'import' => sub { 
-require Example;
-
-is scalar do {Example::A()}, "10", 'Example::A() # => 10';
-is scalar do {Example::B()}, "3", 'Example::B() # => 3';
-is scalar do {Example::C()}, "4", 'Example::C() # => 4';
+is scalar do {A}, "10", 'A # => 10';
+is scalar do {B}, "3", 'B # => 3';
+is scalar do {C}, "4", 'C # => 4';
 
 # And in runtime:
 config->import('D' => 5);

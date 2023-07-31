@@ -99,6 +99,12 @@ sub import {
 
 
 
+
+
+
+
+
+
 __END__
 
 =encoding utf-8
@@ -137,8 +143,8 @@ File .config.pm:
 
 What happened:
 
-	unshift @INC, "lib";
-	require My::Query;
+	use lib 'lib';
+	use My::Query;
 	
 	$My::Query::connect # \> mysql://root:pass@mydb.com/mizericordia
 
@@ -154,10 +160,6 @@ The project must start from this folder in order for the B<./.config.pm> to be r
 
 =head1 import
 
-File lib/Example.pm:
-
-	package Example;
-	
 	# One constant
 	use config A => 10;
 	
@@ -167,15 +169,9 @@ File lib/Example.pm:
 	    C => 4,
 	};
 	
-	1;
-
-
-
-	require Example;
-	
-	Example::A() # => 10
-	Example::B() # => 3
-	Example::C() # => 4
+	A # => 10
+	B # => 3
+	C # => 4
 	
 	# And in runtime:
 	config->import('D' => 5);
