@@ -17,6 +17,8 @@ sub config_module {
 }
 
 # Проект всегда старует от корня своей директории, где и должен лежать модуль
+use DDP; p @INC;
+p my $x=`pwd`;
 require "./.config.pm";
 
 # Импортирует конфиг-константы
@@ -30,36 +32,121 @@ sub import {
 }
 
 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 __END__
 
 =encoding utf-8
 
 =head1 NAME
 
-config - It's new $module
+B<config> — Perl module constant configurator.
 
 =head1 SYNOPSIS
 
-	package Query {
-		use config DB_NAME => "mizericordia";
-		
-		...
-	}
+	warn `pwd`;
+
+File lib/My/Query.pm:
+
+	package My::Query;
+	
+	use config DB_NAME => "mizericordia";
+	use config DB_HOST => "192.168.0.1";
+	
+	use config {
+	    DB_USER => "root",
+	    DB_PASSWORD => "pass",
+	};
+	
+	our $connect = "mysql://" . DB_USER . ":" . DB_PASSWORD . "\@" . DB_HOST . "/" . DB_NAME;
+	
+	1;
+
+File .config.pm:
+
+	package config;
+	
+	config_module 'Query' => {
+	    DB_HOST => "mydb.com",
+	};
+	
+	1;
+
+What happened:
+
+	require "lib/My/Query.pm";
+	
+	$My::Query::connect # \> mysql://root:pass@mydb.com/mizericordia
 
 =head1 DESCRIPTION
 
-main_config is ...
+Config make constant as C<use constant>, but it values substitutes on values from local config if exists.
+
+Local config is the B<./.config.pm> in root folder of the project.
+
+The project must start from this folder in order for the B<./.config.pm> to be read.
+
+=head2 METHODS
+
+=head1 import
+
+	# One constant
+	use config A => 10;
+	
+	A # => 10;
+	
+	# Multiconstants:
+	use config {
+	    B => 3,
+	    C => 4,
+	};
+	
+	B # => 3
+	C # => 4
+	
+	# And in runtime:
+	config->import(D => 5);
+	
+	D # => 5
+
+=head1 config_module MODULE => {...}
+
+Subroutine use in local config (B<./.config.pm>) for configure perl module. To do this, the config must have C<package config>.
+
+=head1 INSTALL
+
+Add to B<cpanfile> in your project:
+
+	on 'test' => sub {
+		requires 'config', 
+			git => 'https://github.com/darviarush/perl-config.git',
+			ref => 'master',
+		;
+	};
+
+And run command:
+
+	$ sudo cpm install -gvv
 
 =head1 LICENSE
 
-Copyright (C) Yaroslav O. Kosmina.
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+⚖ B<GPLv3>
 
 =head1 AUTHOR
 
-Yaroslav O. Kosmina E<lt>darviarush@mail.ruE<gt>
-
-=cut
-
+Yaroslav O. Kosmina LL<mailto:dart@cpan.org>

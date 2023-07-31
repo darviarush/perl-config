@@ -4,9 +4,9 @@
 
 # SYNOPSIS
 
-File lib/Query.pm:
+File lib/My/Query.pm:
 ```perl
-package Query;
+package My::Query;
 
 use config DB_NAME => "mizericordia";
 use config DB_HOST => "192.168.0.1";
@@ -21,7 +21,7 @@ our $connect = "mysql://" . DB_USER . ":" . DB_PASSWORD . "\@" . DB_HOST . "/" .
 1;
 ```
 
-File ./config.pm:
+File .config.pm:
 ```perl
 package config;
 
@@ -34,10 +34,9 @@ config_module 'Query' => {
 
 What happened:
 ```perl
-use Query;
+use My::Query;
 
-$Query::connect # => mysql://root:pass@mydb.com
-
+$My::Query::connect # \> mysql://root:pass@mydb.com/mizericordia
 ```
 
 # DESCRIPTION
@@ -73,12 +72,33 @@ config->import(D => 5);
 D # => 5
 ```
 
-# config_module
+# config_module MODULE => {...}
 
 Subroutine use in local config (**./.config.pm**) for configure perl module. To do this, the config must have `package config`.
 
-It is not recommended to do so:
+# INSTALL
 
-```perl
+Add to **cpanfile** in your project:
 
+```cpanfile
+on 'test' => sub {
+	requires 'config', 
+		git => 'https://github.com/darviarush/perl-config.git',
+		ref => 'master',
+	;
+};
 ```
+
+And run command:
+
+```sh
+$ sudo cpm install -gvv
+```
+
+# LICENSE
+
+⚖ **GPLv3**
+
+# AUTHOR
+
+Yaroslav O. Kosmina [dart@cpan.org](mailto:dart@cpan.org)
