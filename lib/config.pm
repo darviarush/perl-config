@@ -96,6 +96,9 @@ sub import {
 
 
 
+
+
+
 __END__
 
 =encoding utf-8
@@ -151,8 +154,10 @@ The project must start from this folder in order for the B<./.config.pm> to be r
 
 =head1 import
 
-File lib/Example.pl:
+File lib/Example.pm:
 
+	package Example;
+	
 	# One constant
 	use config A => 10;
 	
@@ -166,11 +171,11 @@ File lib/Example.pl:
 
 
 
-	require 'Example.pl';
+	require Example;
 	
-	A() # => 10
-	B() # => 3
-	C() # => 4
+	Example::A() # => 10
+	Example::B() # => 3
+	Example::C() # => 4
 	
 	# And in runtime:
 	config->import('D' => 5);

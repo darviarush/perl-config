@@ -52,8 +52,10 @@ The project must start from this folder in order for the **./.config.pm** to be 
 
 # import
 
-File lib/Example.pl:
+File lib/Example.pm:
 ```perl
+package Example;
+
 # One constant
 use config A => 10;
 
@@ -67,11 +69,11 @@ use config {
 ```
 
 ```perl
-require 'Example.pl';
+require Example;
 
-A() # => 10
-B() # => 3
-C() # => 4
+Example::A() # => 10
+Example::B() # => 3
+Example::C() # => 4
 
 # And in runtime:
 config->import('D' => 5);

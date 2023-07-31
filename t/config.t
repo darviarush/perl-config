@@ -52,9 +52,11 @@ is scalar do {$My::Query::connect}, 'mysql://root:pass@mydb.com/mizericordia', '
 # 
 # # import
 # 
-# File lib/Example.pl:
+# File lib/Example.pm:
 
-{ my $s = main::_mkpath_('lib/Example.pl'); open my $__f__, '>:utf8', $s or die "Read $s: $!"; print $__f__ '# One constant
+{ my $s = main::_mkpath_('lib/Example.pm'); open my $__f__, '>:utf8', $s or die "Read $s: $!"; print $__f__ 'package Example;
+
+# One constant
 use config A => 10;
 
 # Multiconstants:
@@ -67,11 +69,11 @@ use config {
 '; close $__f__ }
 # 
 done_testing; }; subtest 'import' => sub { 
-require 'Example.pl';
+require Example;
 
-is scalar do {A()}, "10", 'A() # => 10';
-is scalar do {B()}, "3", 'B() # => 3';
-is scalar do {C()}, "4", 'C() # => 4';
+is scalar do {Example::A()}, "10", 'Example::A() # => 10';
+is scalar do {Example::B()}, "3", 'Example::B() # => 3';
+is scalar do {Example::C()}, "4", 'Example::C() # => 4';
 
 # And in runtime:
 config->import('D' => 5);
