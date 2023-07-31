@@ -66,15 +66,31 @@ is scalar do {A}, "10", 'A # => 10';
 is scalar do {B}, "3", 'B # => 3';
 is scalar do {C}, "4", 'C # => 4';
 
-# And in runtime:
+# And at runtime:
 config->import('D' => 5);
 
 is scalar do {D()}, "5", 'D() # => 5';
+
+# without params
+use config;
 
 # 
 # # config_module MODULE => {...}
 # 
 # Subroutine use in local config (**./.config.pm**) for configure perl module. To do this, the config must have `package config`.
+# 
+done_testing; }; subtest 'config_module MODULE => {...}' => sub { 
+# config_module at runtime set only runtime constants
+config::config_module 'main' => {
+    D => 10,
+    X => 12,
+};
+
+config->import('X' => 15);
+
+is scalar do {D()}, "5", 'D() # => 5';
+is scalar do {X()}, "12", 'X() # => 12';
+
 # 
 # # INSTALL
 # 

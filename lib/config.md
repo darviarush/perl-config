@@ -66,15 +66,31 @@ A # => 10
 B # => 3
 C # => 4
 
-# And in runtime:
+# And at runtime:
 config->import('D' => 5);
 
 D() # => 5
+
+# without params
+use config;
 ```
 
 # config_module MODULE => {...}
 
 Subroutine use in local config (**./.config.pm**) for configure perl module. To do this, the config must have `package config`.
+
+```perl
+# config_module at runtime set only runtime constants
+config::config_module 'main' => {
+    D => 10,
+    X => 12,
+};
+
+config->import('X' => 15);
+
+D() # => 5
+X() # => 12
+```
 
 # INSTALL
 

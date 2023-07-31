@@ -10,7 +10,7 @@ use constant {};
 our %_CONFIG;
 
 # Конфигурирует модуль. Должен использоваться в .config.pm
-sub config_module {
+sub config_module($$) {
 	my ($pkg, $constants) = @_;
 	$_CONFIG{$pkg} = $constants;
 	return;
@@ -31,79 +31,6 @@ sub import {
 }
 
 1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 __END__
 
@@ -173,14 +100,28 @@ The project must start from this folder in order for the B<./.config.pm> to be r
 	B # => 3
 	C # => 4
 	
-	# And in runtime:
+	# And at runtime:
 	config->import('D' => 5);
 	
 	D() # => 5
+	
+	# without params
+	use config;
 
 =head1 config_module MODULE => {...}
 
 Subroutine use in local config (B<./.config.pm>) for configure perl module. To do this, the config must have C<package config>.
+
+	# config_module at runtime set only runtime constants
+	config::config_module 'main' => {
+	    D => 10,
+	    X => 12,
+	};
+	
+	config->import('X' => 15);
+	
+	D() # => 5
+	X() # => 12
 
 =head1 INSTALL
 
