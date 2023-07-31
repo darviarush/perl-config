@@ -1,12 +1,8 @@
-use strict; use warnings; use utf8; use open qw/:std :utf8/; use Test::More 0.98; sub _mkpath_ { my ($p) = @_; length($`) && !-e $`? mkdir($`, 0755) || die "mkdir $`: $!": () while $p =~ m!/!g; $p } { my $s = '/tmp/.liveman/perl-config/config/'; `rm -fr $s` if -e $s; chdir _mkpath_($s) or die "chdir $s: $!" } # # NAME
+use strict; use warnings; use utf8; use open qw/:std :utf8/; use Test::More 0.98; use Carp::Always::Color; sub _mkpath_ { my ($p) = @_; length($`) && !-e $`? mkdir($`, 0755) || die "mkdir $`: $!": () while $p =~ m!/!g; $p } BEGIN { my $s = '/tmp/.liveman/perl-config/config/'; `rm -fr $s` if -e $s; chdir _mkpath_($s) or die "chdir $s: $!" } # # NAME
 # 
 # **config** — Perl module constant configurator.
 # 
 # # SYNOPSIS
-# 
-subtest 'SYNOPSIS' => sub { 
-warn `pwd`;
-
 # 
 # File lib/My/Query.pm:
 
@@ -37,8 +33,8 @@ config_module \'Query\' => {
 '; close $__f__ }
 # 
 # What happened:
-
-require "lib/My/Query.pm";
+subtest 'SYNOPSIS' => sub { 
+use My::Query;
 
 is scalar do {$My::Query::connect}, 'mysql://root:pass@mydb.com/mizericordia', '$My::Query::connect # \> mysql://root:pass@mydb.com/mizericordia';
 

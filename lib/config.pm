@@ -49,6 +49,7 @@ sub import {
 
 
 
+
 __END__
 
 =encoding utf-8
@@ -58,8 +59,6 @@ __END__
 B<config> — Perl module constant configurator.
 
 =head1 SYNOPSIS
-
-	warn `pwd`;
 
 File lib/My/Query.pm:
 
@@ -89,7 +88,7 @@ File .config.pm:
 
 What happened:
 
-	require "lib/My/Query.pm";
+	use My::Query;
 	
 	$My::Query::connect # \> mysql://root:pass@mydb.com/mizericordia
 
