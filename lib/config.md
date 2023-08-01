@@ -48,9 +48,9 @@ Local config is the **./.config.pm** in root folder of the project.
 
 The project must start from this folder in order for the **./.config.pm** to be read.
 
-## METHODS
+# METHODS
 
-# import
+## import ($name, [$value])
 
 ```perl
 # One constant
@@ -75,7 +75,7 @@ D() # => 5
 use config;
 ```
 
-# config_module MODULE => {...}
+## config_module MODULE => {...}
 
 Subroutine use in local config (**./.config.pm**) for configure perl module. To do this, the config must have `package config`.
 
