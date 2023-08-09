@@ -111,10 +111,10 @@ And run command:
 $ sudo cpm install -gvv
 ```
 
-# LICENSE
-
-⚖ **GPLv3**
-
 # AUTHOR
 
 Yaroslav O. Kosmina [dart@cpan.org](mailto:dart@cpan.org)
+
+# LICENSE
+
+⚖ **GPLv3**
