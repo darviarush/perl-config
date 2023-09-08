@@ -3,7 +3,7 @@ use 5.008001;
 use strict;
 use warnings;
 
-our $VERSION = "0.01";
+our $VERSION = "1.0";
 
 use constant {};
 
@@ -38,7 +38,11 @@ __END__
 
 =head1 NAME
 
-B<config> — Perl module constant configurator.
+config - Perl module constant configurator
+
+=head1 VERSION
+
+1.0
 
 =head1 SYNOPSIS
 
@@ -83,9 +87,9 @@ Local config is the B<./.config.pm> in root folder of the project.
 
 The project must start from this folder in order for the B<./.config.pm> to be read.
 
-=head2 METHODS
+=head1 METHODS
 
-=head1 import
+=head2 import ($name, [$value])
 
 	# One constant
 	use config A => 10;
@@ -108,7 +112,7 @@ The project must start from this folder in order for the B<./.config.pm> to be r
 	# without params
 	use config;
 
-=head1 config_module MODULE => {...}
+=head2 config_module MODULE => {...}
 
 Subroutine use in local config (B<./.config.pm>) for configure perl module. To do this, the config must have C<package config>.
 
@@ -138,10 +142,10 @@ And run command:
 
 	$ sudo cpm install -gvv
 
-=head1 LICENSE
-
-⚖ B<GPLv3>
-
 =head1 AUTHOR
 
 Yaroslav O. Kosmina LL<mailto:dart@cpan.org>
+
+=head1 LICENSE
+
+⚖ B<GPLv3>

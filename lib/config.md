@@ -1,6 +1,10 @@
 # NAME
 
-**config** — Perl module constant configurator.
+config - Perl module constant configurator
+
+# VERSION
+
+1.0
 
 # SYNOPSIS
 

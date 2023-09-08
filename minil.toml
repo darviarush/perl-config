@@ -1,5 +1,8 @@
 name = "config"
 #badges = ["github-actions/test.yml"]
+authority="cpan:DART"
+license="gpl_3"
+
 module_maker="ModuleBuildTiny"
 static_install = "auto"
 

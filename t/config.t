@@ -1,6 +1,10 @@
-use strict; use warnings; use utf8; use open qw/:std :utf8/; use Test::More 0.98; use Carp::Always::Color; sub _mkpath_ { my ($p) = @_; length($`) && !-e $`? mkdir($`, 0755) || die "mkdir $`: $!": () while $p =~ m!/!g; $p } BEGIN { my $t = `pwd`; chop $t; $t .= '/' . __FILE__; my $s = '/tmp/.liveman/perl-config/config/'; `rm -fr $s` if -e $s; chdir _mkpath_($s) or die "chdir $s: $!"; open my $__f__, "<:utf8", $t or die "Read $t: $!"; $s = join "", <$__f__>; close $__f__; while($s =~ /^#\@> (.*)\n((#>> .*\n)*)#\@< EOF\n/gm) { my ($file, $code) = ($1, $2); $code =~ s/^#>> //mg; open my $__f__, ">:utf8", _mkpath_($file) or die "Write $file: $!"; print $__f__ $code; close $__f__; } } # # NAME
+use common::sense; use open qw/:std :utf8/; use Test::More 0.98; use Carp::Always::Color; sub _mkpath_ { my ($p) = @_; length($`) && !-e $`? mkdir($`, 0755) || die "mkdir $`: $!": () while $p =~ m!/!g; $p } BEGIN { my $t = `pwd`; chop $t; $t .= '/' . __FILE__; my $s = '/tmp/.liveman/perl-config/config/'; `rm -fr $s` if -e $s; chdir _mkpath_($s) or die "chdir $s: $!"; open my $__f__, "<:utf8", $t or die "Read $t: $!"; $s = join "", <$__f__>; close $__f__; while($s =~ /^#\@> (.*)\n((#>> .*\n)*)#\@< EOF\n/gm) { my ($file, $code) = ($1, $2); $code =~ s/^#>> //mg; open my $__f__, ">:utf8", _mkpath_($file) or die "Write $file: $!"; print $__f__ $code; close $__f__; } } # # NAME
 # 
-# **config** — Perl module constant configurator.
+# config - Perl module constant configurator
+# 
+# # VERSION
+# 
+# 1.0
 # 
 # # SYNOPSIS
 # 
@@ -37,7 +41,7 @@ subtest 'SYNOPSIS' => sub {
 use lib 'lib';
 use My::Query;
 
-is scalar do {$My::Query::connect}, 'mysql://root:pass@mydb.com/mizericordia', '$My::Query::connect # \> mysql://root:pass@mydb.com/mizericordia';
+::is scalar do {$My::Query::connect}, 'mysql://root:pass@mydb.com/mizericordia', '$My::Query::connect # \> mysql://root:pass@mydb.com/mizericordia';
 
 # 
 # # DESCRIPTION
@@ -48,11 +52,11 @@ is scalar do {$My::Query::connect}, 'mysql://root:pass@mydb.com/mizericordia', '
 # 
 # The project must start from this folder in order for the **./.config.pm** to be read.
 # 
-# ## METHODS
+# # METHODS
 # 
-# # import
+# ## import ($name, [$value])
 # 
-done_testing; }; subtest 'import' => sub { 
+done_testing; }; subtest 'import ($name, [$value])' => sub { 
 # One constant
 use config A => 10;
 
@@ -62,20 +66,20 @@ use config {
     C => 4,
 };
 
-is scalar do {A}, "10", 'A # => 10';
-is scalar do {B}, "3", 'B # => 3';
-is scalar do {C}, "4", 'C # => 4';
+::is scalar do {A}, "10", 'A # => 10';
+::is scalar do {B}, "3", 'B # => 3';
+::is scalar do {C}, "4", 'C # => 4';
 
 # And at runtime:
 config->import('D' => 5);
 
-is scalar do {D()}, "5", 'D() # => 5';
+::is scalar do {D()}, "5", 'D() # => 5';
 
 # without params
 use config;
 
 # 
-# # config_module MODULE => {...}
+# ## config_module MODULE => {...}
 # 
 # Subroutine use in local config (**./.config.pm**) for configure perl module. To do this, the config must have `package config`.
 # 
@@ -88,8 +92,8 @@ config::config_module 'main' => {
 
 config->import('X' => 15);
 
-is scalar do {D()}, "5", 'D() # => 5';
-is scalar do {X()}, "12", 'X() # => 12';
+::is scalar do {D()}, "5", 'D() # => 5';
+::is scalar do {X()}, "12", 'X() # => 12';
 
 # 
 # # INSTALL
@@ -111,13 +115,13 @@ is scalar do {X()}, "12", 'X() # => 12';
 # $ sudo cpm install -gvv
 
 # 
-# # LICENSE
-# 
-# ⚖ **GPLv3**
-# 
 # # AUTHOR
 # 
 # Yaroslav O. Kosmina [dart@cpan.org](mailto:dart@cpan.org)
+# 
+# # LICENSE
+# 
+# ⚖ **GPLv3**
 	done_testing;
 };
 
