@@ -1,7 +1,9 @@
 package config;
-use 5.22.0;
+use 5.008001;
+use strict;
+use warnings;
 
-our $VERSION = "1.1";
+our $VERSION = "1.2";
 
 use constant {};
 
@@ -25,7 +27,16 @@ sub import {
 	
 	my $pkg = caller;
 
-	constant->import("${pkg}::$_", exists $_CONFIG{$pkg} && exists $_CONFIG{$pkg}{$_}? $_CONFIG{$pkg}{$_}: $hash->{$_}) for keys %$hash;
+	if(!$^V or $^V lt 5.22.0) {
+		no strict 'refs';
+		for(keys %$hash) {
+			my $val = exists $_CONFIG{$pkg} && exists $_CONFIG{$pkg}{$_}? $_CONFIG{$pkg}{$_}: $hash->{$_};
+			*{"${pkg}::$_"} = sub {$val};
+		}
+	} else {
+		constant->import("${pkg}::$_", exists $_CONFIG{$pkg} && exists $_CONFIG{$pkg}{$_}? $_CONFIG{$pkg}{$_}: $hash->{$_}) for keys %$hash;
+	}
+
 }
 
 1;
@@ -40,7 +51,7 @@ config - Perl module constant configurator
 
 =head1 VERSION
 
-1.0
+1.2
 
 =head1 SYNOPSIS
 
