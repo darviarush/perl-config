@@ -2,6 +2,10 @@ Revision history for Perl extension config
 
 {{$NEXT}}
 
+1.2 2023-09-27T16:44:15Z
+
+    - use config for more version of perl!
+
 1.1 2023-09-27T16:28:23Z
 
     - Set minimal version of perl

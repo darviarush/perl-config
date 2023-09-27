@@ -4,7 +4,7 @@ config - Perl module constant configurator
 
 # VERSION
 
-1.2
+1.3
 
 # SYNOPSIS
 
