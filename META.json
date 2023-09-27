@@ -42,12 +42,11 @@
       },
       "runtime" : {
          "requires" : {
-            "perl" : "5.008001"
+            "perl" : "v5.22.0"
          }
       },
       "test" : {
          "requires" : {
-            "Liveman" : "0",
             "Test::More" : "0.98"
          }
       }
@@ -64,7 +63,7 @@
          "web" : "https://github.com/darviarush/perl-config"
       }
    },
-   "version" : "1.0",
+   "version" : "1.1",
    "x_authority" : "cpan:DART",
    "x_contributors" : [
       "Iaroslav O. Kosmina <darviarush@ya.ru>",

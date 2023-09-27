@@ -1,3 +1,4 @@
+[![Actions Status](https://github.com/darviarush/perl-config/actions/workflows/test.yml/badge.svg)](https://github.com/darviarush/perl-config/actions)
 # NAME
 
 config - Perl module constant configurator

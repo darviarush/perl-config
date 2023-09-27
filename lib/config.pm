@@ -1,9 +1,7 @@
 package config;
-use 5.008001;
-use strict;
-use warnings;
+use 5.22.0;
 
-our $VERSION = "1.0";
+our $VERSION = "1.1";
 
 use constant {};
 
