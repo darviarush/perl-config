@@ -2,6 +2,10 @@ Revision history for Perl extension config
 
 {{$NEXT}}
 
+1.3 2023-09-27T16:48:37Z
+
+    - change license to perl_5
+
 1.2 2023-09-27T16:44:15Z
 
     - use config for more version of perl!

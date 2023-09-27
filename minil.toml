@@ -1,7 +1,7 @@
 name = "config"
 
 authority="cpan:DART"
-license="gpl_3"
+license="perl_5"
 
 badges = ["github-actions/test.yml"]
 markdown_maker = "Liveman::MinillaPod2Markdown"

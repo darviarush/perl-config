@@ -121,4 +121,4 @@ Yaroslav O. Kosmina [dart@cpan.org](mailto:dart@cpan.org)
 
 # LICENSE
 
-⚖ **GPLv3**
+⚖ **Perl5**
