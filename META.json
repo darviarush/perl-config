@@ -66,8 +66,7 @@
    "version" : "1.3",
    "x_authority" : "cpan:DART",
    "x_contributors" : [
-      "Iaroslav O. Kosmina <darviarush@ya.ru>",
-      "Yaroslav O. Kosmina <darviarush@mail.ru>"
+      "Yaroslav O. Kosmina <dart@cpan.org>"
    ],
    "x_serialization_backend" : "JSON::PP version 4.16",
    "x_static_install" : 1
