@@ -3,7 +3,7 @@ use 5.008001;
 use strict;
 use warnings;
 
-our $VERSION = "1.3";
+our $VERSION = "1.3.0";
 
 use constant {};
 
@@ -51,7 +51,7 @@ config - Perl module constant configurator
 
 =head1 VERSION
 
-1.2
+1.3.0
 
 =head1 SYNOPSIS
 
@@ -157,4 +157,4 @@ Yaroslav O. Kosmina LL<mailto:dart@cpan.org>
 
 =head1 LICENSE
 
-⚖ B<GPLv3>
+⚖ B<Perl5>

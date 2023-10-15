@@ -4,7 +4,7 @@ use common::sense; use open qw/:std :utf8/; use Test::More 0.98; sub _mkpath_ { 
 # 
 # # VERSION
 # 
-# 1.2
+# 1.3.0
 # 
 # # SYNOPSIS
 # 
@@ -121,7 +121,7 @@ config->import('X' => 15);
 # 
 # # LICENSE
 # 
-# ⚖ **GPLv3**
+# ⚖ **Perl5**
 	done_testing;
 };
 
