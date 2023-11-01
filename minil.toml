@@ -3,7 +3,7 @@ name = "config"
 authority="cpan:DART"
 license="perl_5"
 
-badges = ["github-actions/test.yml"]
+badges = ["github-actions/test.yml", "metacpan"]
 markdown_maker = "Liveman::MinillaPod2Markdown"
 module_maker="ModuleBuildTiny"
 static_install = "auto"
