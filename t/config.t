@@ -1,6 +1,7 @@
-use common::sense; use open qw/:std :utf8/; use Test::More 0.98; sub _mkpath_ { my ($p) = @_; length($`) && !-e $`? mkdir($`, 0755) || die "mkdir $`: $!": () while $p =~ m!/!g; $p } BEGIN { use Scalar::Util qw//; use Carp qw//; $SIG{__DIE__} = sub { my ($s) = @_; if(ref $s) { $s->{STACKTRACE} = Carp::longmess "?" if "HASH" eq Scalar::Util::reftype $s; die $s } else {die Carp::longmess defined($s)? $s: "undef" }}; my $t = `pwd`; chop $t; $t .= '/' . __FILE__; my $s = '/tmp/.liveman/perl-config!config/'; `rm -fr '$s'` if -e $s; chdir _mkpath_($s) or die "chdir $s: $!"; open my $__f__, "<:utf8", $t or die "Read $t: $!"; read $__f__, $s, -s $__f__; close $__f__; while($s =~ /^#\@> (.*)\n((#>> .*\n)*)#\@< EOF\n/gm) { my ($file, $code) = ($1, $2); $code =~ s/^#>> //mg; open my $__f__, ">:utf8", _mkpath_($file) or die "Write $file: $!"; print $__f__ $code; close $__f__; } } # # NAME
+use common::sense; use open qw/:std :utf8/;  use Carp qw//; use File::Basename qw//; use File::Slurper qw//; use File::Spec qw//; use File::Path qw//; use Scalar::Util qw//;  use Test::More 0.98;  BEGIN {     $SIG{__DIE__} = sub {         my ($s) = @_;         if(ref $s) {             $s->{STACKTRACE} = Carp::longmess "?" if "HASH" eq Scalar::Util::reftype $s;             die $s;         } else {             die Carp::longmess defined($s)? $s: "undef"         }     };      my $t = File::Slurper::read_text(__FILE__);     my $s =  '/tmp/.liveman/perl-config/config'    ;     File::Path::rmtree($s) if -e $s;     File::Path::mkpath($s);     chdir $s or die "chdir $s: $!";      while($t =~ /^#\@> (.*)\n((#>> .*\n)*)#\@< EOF\n/gm) {         my ($file, $code) = ($1, $2);         $code =~ s/^#>> //mg;         File::Path::mkpath(File::Basename::dirname($file));         File::Slurper::write_text($file, $code);     }  } # 
+# # NAME
 # 
-# config - Perl module constant configurator
+# config - Конфигуратор констант Perl-модуля
 # 
 # # VERSION
 # 
@@ -8,7 +9,7 @@ use common::sense; use open qw/:std :utf8/; use Test::More 0.98; sub _mkpath_ { 
 # 
 # # SYNOPSIS
 # 
-# File lib/My/Query.pm:
+# Файл lib/My/Query.pm:
 #@> lib/My/Query.pm
 #>> package My::Query;
 #>> 
@@ -25,18 +26,18 @@ use common::sense; use open qw/:std :utf8/; use Test::More 0.98; sub _mkpath_ { 
 #>> 1;
 #@< EOF
 # 
-# File .config.pm:
+# Файл .config.pm:
 #@> .config.pm
 #>> package config;
 #>> 
-#>> config_module 'My::Query' => {
+#>> config 'My::Query' => (
 #>>     DB_HOST => "mydb.com",
-#>> };
+#>> );
 #>> 
 #>> 1;
 #@< EOF
 # 
-# What happened:
+# Что должно получиться:
 subtest 'SYNOPSIS' => sub { 
 use lib 'lib';
 use My::Query;
@@ -46,21 +47,21 @@ use My::Query;
 # 
 # # DESCRIPTION
 # 
-# Config make constant as `use constant`, but it values substitutes on values from local config if exists.
+# `use config` создаёт константу так же как `use constant`, но берёт значение из локального конфиг-файла проекта, если она там указана.
 # 
-# Local config is the **./.config.pm** in root folder of the project.
+# Файл конфига **./.config.pm** находится в корневой директории проекта.
 # 
-# The project must start from this folder in order for the **./.config.pm** to be read.
+# Текущая директория в проекте должна соответствовать корню проекта.
 # 
 # # METHODS
 # 
 # ## import ($name, [$value])
 # 
 done_testing; }; subtest 'import ($name, [$value])' => sub { 
-# One constant
+# Одна константа
 use config A => 10;
 
-# Multiconstants:
+# Много констант:
 use config {
     B => 3,
     C => 4,
@@ -70,25 +71,24 @@ use config {
 ::is scalar do {B}, "3", 'B # => 3';
 ::is scalar do {C}, "4", 'C # => 4';
 
-# And at runtime:
+# И в рантайме:
 config->import('D' => 5);
 
 ::is scalar do {D()}, "5", 'D() # => 5';
 
-# without params
+# Без параметров:
 use config;
 
 # 
-# ## config_module MODULE => {...}
+# ## config MODULE => (...)
 # 
-# Subroutine use in local config (**./.config.pm**) for configure perl module. To do this, the config must have `package config`.
+# Функция используется в файле конфига (**./.config.pm**) для настройки модулей Perl. Для конфиг должен начинаться на `package config;`.
 # 
-done_testing; }; subtest 'config_module MODULE => {...}' => sub { 
-# config_module at runtime set only runtime constants
-config::config_module 'main' => {
+done_testing; }; subtest 'config MODULE => (...)' => sub { 
+config::config 'main' => (
     D => 10,
     X => 12,
-};
+);
 
 config->import('X' => 15);
 
@@ -96,32 +96,18 @@ config->import('X' => 15);
 ::is scalar do {X()}, "12", 'X() # => 12';
 
 # 
-# # INSTALL
-# 
-# Add to **cpanfile** in your project:
-# 
-
-# on 'test' => sub {
-# 	requires 'config', 
-# 		git => 'https://github.com/darviarush/perl-config.git',
-# 		ref => 'master',
-# 	;
-# };
-
-# 
-# And run command:
-# 
-
-# $ sudo cpm install -gvv
-
-# 
 # # AUTHOR
 # 
-# Yaroslav O. Kosmina [dart@cpan.org](mailto:dart@cpan.org)
+# Yaroslav O. Kosmina <dart@cpan.org>
 # 
 # # LICENSE
 # 
 # ⚖ **Perl5**
+# 
+# # COPYRIGHT
+# 
+# The config module is copyright © 2023 Yaroslav O. Kosmina. Rusland. All rights reserved.
+
 	done_testing;
 };
 

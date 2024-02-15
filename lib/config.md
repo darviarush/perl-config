@@ -1,6 +1,7 @@
+!ru:en
 # NAME
 
-config - Perl module constant configurator
+config - Конфигуратор констант Perl-модуля
 
 # VERSION
 
@@ -8,7 +9,7 @@ config - Perl module constant configurator
 
 # SYNOPSIS
 
-File lib/My/Query.pm:
+Файл lib/My/Query.pm:
 ```perl
 package My::Query;
 
@@ -25,18 +26,18 @@ our $connect = "mysql://" . DB_USER . ":" . DB_PASSWORD . "\@" . DB_HOST . "/" .
 1;
 ```
 
-File .config.pm:
+Файл .config.pm:
 ```perl
 package config;
 
-config_module 'My::Query' => {
+config 'My::Query' => (
     DB_HOST => "mydb.com",
-};
+);
 
 1;
 ```
 
-What happened:
+Что должно получиться:
 ```perl
 use lib 'lib';
 use My::Query;
@@ -46,21 +47,21 @@ $My::Query::connect # \> mysql://root:pass@mydb.com/mizericordia
 
 # DESCRIPTION
 
-Config make constant as `use constant`, but it values substitutes on values from local config if exists.
+`use config` создаёт константу так же как `use constant`, но берёт значение из локального конфиг-файла проекта, если она там указана.
 
-Local config is the **./.config.pm** in root folder of the project.
+Файл конфига **./.config.pm** находится в корневой директории проекта.
 
-The project must start from this folder in order for the **./.config.pm** to be read.
+Текущая директория в проекте должна соответствовать корню проекта.
 
 # METHODS
 
 ## import ($name, [$value])
 
 ```perl
-# One constant
+# Одна константа
 use config A => 10;
 
-# Multiconstants:
+# Много констант:
 use config {
     B => 3,
     C => 4,
@@ -70,25 +71,24 @@ A # => 10
 B # => 3
 C # => 4
 
-# And at runtime:
+# И в рантайме:
 config->import('D' => 5);
 
 D() # => 5
 
-# without params
+# Без параметров:
 use config;
 ```
 
-## config_module MODULE => {...}
+## config MODULE => (...)
 
-Subroutine use in local config (**./.config.pm**) for configure perl module. To do this, the config must have `package config`.
+Функция используется в файле конфига (**./.config.pm**) для настройки модулей Perl. Для конфиг должен начинаться на `package config;`.
 
 ```perl
-# config_module at runtime set only runtime constants
-config::config_module 'main' => {
+config::config 'main' => (
     D => 10,
     X => 12,
-};
+);
 
 config->import('X' => 15);
 
@@ -96,29 +96,14 @@ D() # => 5
 X() # => 12
 ```
 
-# INSTALL
-
-Add to **cpanfile** in your project:
-
-```cpanfile
-on 'test' => sub {
-	requires 'config', 
-		git => 'https://github.com/darviarush/perl-config.git',
-		ref => 'master',
-	;
-};
-```
-
-And run command:
-
-```sh
-$ sudo cpm install -gvv
-```
-
 # AUTHOR
 
-Yaroslav O. Kosmina [dart@cpan.org](dart@cpan.org)
+Yaroslav O. Kosmina <dart@cpan.org>
 
 # LICENSE
 
 ⚖ **Perl5**
+
+# COPYRIGHT
+
+The config module is copyright © 2023 Yaroslav O. Kosmina. Rusland. All rights reserved.

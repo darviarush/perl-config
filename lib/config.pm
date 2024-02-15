@@ -10,6 +10,14 @@ use constant {};
 our %_CONFIG;
 
 # Конфигурирует модуль. Должен использоваться в .config.pm
+sub config($%) {
+	my $pkg = shift;
+	$_CONFIG{$pkg} = {@_};
+	return;
+}
+
+# Конфигурирует модуль. Должен использоваться в .config.pm
+#@deprecated
 sub config_module($$) {
 	my ($pkg, $constants) = @_;
 	$_CONFIG{$pkg} = $constants;
@@ -71,17 +79,17 @@ File lib/My/Query.pm:
 	
 	1;
 
-File .config.pm:
+.config.pm file:
 
 	package config;
 	
-	config_module 'My::Query' => {
+	config 'My::Query' => (
 	    DB_HOST => "mydb.com",
-	};
+	);
 	
 	1;
 
-What happened:
+What should happen:
 
 	use lib 'lib';
 	use My::Query;
@@ -90,20 +98,20 @@ What happened:
 
 =head1 DESCRIPTION
 
-Config make constant as C<use constant>, but it values substitutes on values from local config if exists.
+C<use config> creates a constant in the same way as C<use constant>, but takes the value from the project's local config file if one is specified there.
 
-Local config is the B<./.config.pm> in root folder of the project.
+The config file B<./.config.pm> is located in the root directory of the project.
 
-The project must start from this folder in order for the B<./.config.pm> to be read.
+The current directory in the project must correspond to the project root.
 
 =head1 METHODS
 
 =head2 import ($name, [$value])
 
-	# One constant
+	# Одна константа
 	use config A => 10;
 	
-	# Multiconstants:
+	# Много констант:
 	use config {
 	    B => 3,
 	    C => 4,
@@ -113,48 +121,36 @@ The project must start from this folder in order for the B<./.config.pm> to be r
 	B # => 3
 	C # => 4
 	
-	# And at runtime:
+	# И в рантайме:
 	config->import('D' => 5);
 	
 	D() # => 5
 	
-	# without params
+	# Без параметров:
 	use config;
 
-=head2 config_module MODULE => {...}
+=head2 config MODULE => (...)
 
-Subroutine use in local config (B<./.config.pm>) for configure perl module. To do this, the config must have C<package config>.
+The function is used in the config file (B<./.config.pm>) to configure Perl modules. For config it should start with C<package config;>.
 
-	# config_module at runtime set only runtime constants
-	config::config_module 'main' => {
+	config::config 'main' => (
 	    D => 10,
 	    X => 12,
-	};
+	);
 	
 	config->import('X' => 15);
 	
 	D() # => 5
 	X() # => 12
 
-=head1 INSTALL
-
-Add to B<cpanfile> in your project:
-
-	on 'test' => sub {
-		requires 'config', 
-			git => 'https://github.com/darviarush/perl-config.git',
-			ref => 'master',
-		;
-	};
-
-And run command:
-
-	$ sudo cpm install -gvv
-
 =head1 AUTHOR
 
-Yaroslav O. Kosmina LL<mailto:dart@cpan.org>
+Yaroslav O. Kosmina L<mailto:dart@cpan.org>
 
 =head1 LICENSE
 
 ⚖ B<Perl5>
+
+=head1 COPYRIGHT
+
+The config module is copyright © 2023 Yaroslav O. Kosmina. Rusland. All rights reserved.

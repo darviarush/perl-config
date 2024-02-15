@@ -1,0 +1,48 @@
+msgid "# NAME"
+msgstr "#NAME"
+
+msgid "config - Конфигуратор констант Perl-модуля"
+msgstr "config - Perl module constant configurator"
+
+msgid "1.3.0"
+msgstr "1.3.0"
+
+msgid "Файл lib/My/Query.pm:"
+msgstr "File lib/My/Query.pm:"
+
+msgid "Файл .config.pm:"
+msgstr ".config.pm file:"
+
+msgid "Что должно получиться:"
+msgstr "What should happen:"
+
+msgid "# DESCRIPTION"
+msgstr "#DESCRIPTION"
+
+msgid "`use config` создаёт константу так же как `use constant`, но берёт значение из локального конфиг-файла проекта, если она там указана."
+msgstr "`use config` creates a constant in the same way as `use constant`, but takes the value from the project's local config file if one is specified there."
+
+msgid "Файл конфига **./.config.pm** находится в корневой директории проекта."
+msgstr "The config file **./.config.pm** is located in the root directory of the project."
+
+msgid "Текущая директория в проекте должна соответствовать корню проекта."
+msgstr "The current directory in the project must correspond to the project root."
+
+msgid "## config MODULE => (...)"
+msgstr "## config MODULE => (...)"
+
+msgid "Функция используется в файле конфига (**./.config.pm**) для настройки модулей Perl. Для конфиг должен начинаться на `package config;`."
+msgstr "The function is used in the config file (**./.config.pm**) to configure Perl modules. For config it should start with `package config;`."
+
+msgid "# AUTHOR"
+msgstr "#AUTHOR"
+
+msgid "Yaroslav O. Kosmina <dart@cpan.org>"
+msgstr "Yaroslav O. Kosmina <dart@cpan.org>"
+
+msgid "⚖ **Perl5**"
+msgstr "⚖ **Perl5**"
+
+msgid "The config module is copyright © 2023 Yaroslav O. Kosmina. Rusland. All rights reserved."
+msgstr "The config module is copyright © 2023 Yaroslav O. Kosmina. Rusland. All rights reserved."
+
