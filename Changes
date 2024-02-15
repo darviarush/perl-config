@@ -2,6 +2,8 @@ Revision history for Perl extension config
 
 {{$NEXT}}
 
+1.4.1 2024-02-15T10:06:10Z
+
     - Liveman use in cpanfile for testing
 
 1.4.0 2024-02-15T09:54:32Z
