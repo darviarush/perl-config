@@ -1,11 +1,11 @@
-!ru:en
+[![Actions Status](https://github.com/darviarush/perl-config/actions/workflows/test.yml/badge.svg)](https://github.com/darviarush/perl-config/actions) [![MetaCPAN Release](https://badge.fury.io/pl/config.svg)](https://metacpan.org/release/config)
 # NAME
 
 config - Конфигуратор констант Perl-модуля
 
 # VERSION
 
-1.3.0
+1.4.0
 
 # SYNOPSIS
 
