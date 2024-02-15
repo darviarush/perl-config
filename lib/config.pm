@@ -3,7 +3,7 @@ use 5.008001;
 use strict;
 use warnings;
 
-our $VERSION = "1.4.0";
+our $VERSION = "1.4.1";
 
 use constant {};
 
@@ -59,7 +59,7 @@ config - Perl module constant configurator
 
 =head1 VERSION
 
-1.4.0
+1.4.1
 
 =head1 SYNOPSIS
 

@@ -5,7 +5,7 @@ config - Конфигуратор констант Perl-модуля
 
 # VERSION
 
-1.4.0
+1.4.1
 
 # SYNOPSIS
 
